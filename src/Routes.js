@@ -12,6 +12,13 @@ import Register from "./Pages/Register/Register";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import NotFound from "./Pages/NotFound/NotFound";
 
+const authGuard = (Component) => () => {
+  return localStorage.getItem("token") ? (
+    <Component />
+  ) : (
+    <Redirect to="/login" />
+  );
+};
 const Routes = (props) => (
   <Router {...props}>
     <Switch>
@@ -21,9 +28,7 @@ const Routes = (props) => (
       <Route path="/register">
         <Register />
       </Route>
-      <Route path="/dashboard">
-        <Dashboard />
-      </Route>
+      <Route path="/dashboard" render={authGuard(Dashboard)}></Route>
       <Route exact path="/">
         <Redirect to="/dashboard" />
       </Route>
